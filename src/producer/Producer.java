@@ -19,7 +19,7 @@ public class Producer implements Runnable{
 		}
 		
 		try {
-			System.setSecurityManager(new RMISecurityManager());
+			//System.setSecurityManager(new RMISecurityManager());
 			String url = "rmi://localhost:2001/platform";
 			this.tampon = (PlatformInterface)Naming.lookup(url);
 		}
@@ -54,14 +54,18 @@ public class Producer implements Runnable{
 	}
 	@Override
 	public void run() {
-		while(true) {
+		int i =0; 
+		while(i<10) { // while(true) mais pour les tests 10 i3oum
 			try {
 				if(tampon.getAutorisationEcriture()) {
 					produire(this.generate());
+					i++;
 				}
+	
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
+	
 		}
 
 	}
