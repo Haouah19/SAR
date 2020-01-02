@@ -8,7 +8,7 @@ Il faut ouvrir 3 terminaux : </p>
     <li> javac PlatformInterface.java Platform.java PlatformServer.java </li>
     <li> rmic -vcompat Platform : créer les talons pour les objets appelés à distance </li>
     <li> Faire l'etape 1 de Producer/Consumer </li>
-    <li> registry -J-Djava.security.policy=serveur.policy 2001 & : cela afin de préciser 2001, car il prend 10.. par défaut </li>
+    <li> rmiregistry -J-Djava.security.policy=serveur.policy 2001 & : cela afin de préciser 2001, car il prend 10.. par défaut </li>
     <li> java PlatformServer </li>
 </ol>
 
