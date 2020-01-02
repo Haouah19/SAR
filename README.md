@@ -1,4 +1,4 @@
-<p> D'abord, le problème est que les producteurs et les consommateurs n'ont pas accès à Platform et cela à cause de la politique de sécurité.<br> Une "java.security.AccessControlException: access denied ("java.net.SocketPermission" "127.0.0.1:2001" "connect,resolve")" est levée car quelque part je n'ai pas défini les bons droits. <br> Les lignes utilisant tampon renvoient un NullPointerException. <br> On doit régler cela demain matin </p>.
+<p> D'abord, le problème est que les producteurs et les consommateurs n'ont pas accès à Platform et cela à cause de la politique de sécurité.<br> Une "java.security.AccessControlException: access denied ("java.net.SocketPermission" "127.0.0.1:2001" "connect,resolve")" est levée car quelque part je n'ai pas défini les bons droits. <br> Les lignes utilisant tampon renvoient un NullPointerException. <br> On doit régler cela demain matin. </p>
 
 <p>Pour exécuter ce projet :<br>
 Il faut ouvrir 3 terminaux : </p>
