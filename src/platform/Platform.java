@@ -7,6 +7,9 @@ public class Platform extends java.rmi.server.UnicastRemoteObject implements Pla
 	private int indexConsommation; // Pour lire
 	private int nbAutorisationEcriture; // Pour pouvoir écrire
 	private int nbAutorisationLecture; // Pour pouvoir lire
+
+	private Object mutexProd = new Object();
+	private Object mutexCons = new Object();
 	
 	
 	public Platform(int taille) throws RemoteException {
@@ -15,38 +18,47 @@ public class Platform extends java.rmi.server.UnicastRemoteObject implements Pla
 		this.indexConsommation = 0;	
 		this.nbAutorisationEcriture = 0;
 		this.nbAutorisationLecture = 0;
+		System.out.println("*******************************************************");
+		System.out.println("lancement de la Plateforme");
 		System.out.println("Initialisation : "+this);
 	}
 	
 
 	public void produire(String message) throws RemoteException {
-		tampon[indexProduction] = message;
-		indexProduction= (indexProduction+1)%tampon.length;
-		this.nbAutorisationEcriture--;
+		synchronized(mutexProd){
+			tampon[indexProduction] = message;
+			indexProduction= (indexProduction+1)%tampon.length;
+			this.nbAutorisationEcriture--;
+		}
 		System.out.println("Production : "+this);
 	}
 	
 	public String consommer() throws RemoteException {
-		String message = tampon[indexConsommation];
-		tampon[indexConsommation]= null;
-		indexConsommation= (indexConsommation+1)%tampon.length;
-		this.nbAutorisationLecture --;
+		String message = null;
+		synchronized(mutexCons){
+			message = tampon[indexConsommation];
+			tampon[indexConsommation]= null;
+			indexConsommation= (indexConsommation+1)%tampon.length;
+			this.nbAutorisationLecture --;
+		}
 		System.out.println("Consommation : "+this);
 		return message;
 	}
 	
 	public boolean getAutorisationEcriture() throws RemoteException{
-		int nbCaseVide = 0;
-		for(String message : this.tampon ) {
-			if(message == null) {
-				nbCaseVide++;
+		synchronized(mutexProd){
+			int nbCaseVide = 0;
+			for(String message : this.tampon ) {
+				if(message == null) {
+					nbCaseVide++;
+				}
 			}
+			if(nbCaseVide > this.nbAutorisationEcriture) {
+				nbAutorisationEcriture++;
+				return true;
+			}			
+			return false;
 		}
-		if(nbCaseVide > this.nbAutorisationEcriture) {
-			nbAutorisationEcriture++;
-			return true;
-		}			
-		return false;
 	}
 	
 	public String toString(){
@@ -61,16 +73,19 @@ public class Platform extends java.rmi.server.UnicastRemoteObject implements Pla
 	}
 
 	public boolean getAutorisationLecture() {
-		int nbCasePleine =0;
-		for(String message : this.tampon ) {
-			if(message != null) {
-				nbCasePleine ++;
+		synchronized(mutexCons){
+			int nbCasePleine =0;
+			for(String message : this.tampon ) {
+				if(message != null) {
+					nbCasePleine ++;
+				}
 			}
+			if(nbCasePleine > this.nbAutorisationLecture) {
+				nbAutorisationLecture++;
+				return true;
+			}
+			return false;
 		}
-		if(nbCasePleine > this.nbAutorisationLecture) {
-			nbAutorisationLecture++;
-			return true;
-		}
-		return false;
+
 	}
 }
