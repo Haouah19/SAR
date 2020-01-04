@@ -1,8 +1,3 @@
-<p> On lance la phase de tests </p>
-
-<p>Pour exécuter ce projet après le  git pull (bien évidemment !!) :<br>
-Il faut ouvrir 3 terminaux : </p>
-
 - Platform : 
 <ol>
     <li> javac PlatformInterface.java Platform.java PlatformServer.java </li>
