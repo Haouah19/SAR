@@ -13,7 +13,7 @@
     <li> java Producer </li>
 </ol>
 
- - Consumer : n'est pas totalement exploitable !!! </p>
+ - Consumer : </p>
   <ol>
     <li> javac PlatformInterface.java Consumer.java</li>
     <li> java Consumer </li>
